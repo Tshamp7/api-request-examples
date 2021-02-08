@@ -31,13 +31,19 @@ const HomeSearch = () => {
       );
     }
 
-    if (loading && !results) {
-      return <div className="ui container">Loading...</div>;
+    if (loading) {
+      return (
+        <div className="ui segment" style={{ height: "100px" }}>
+          <div className="ui active inverted dimmer">
+            <div className="ui text loader">Loading</div>
+          </div>
+        </div>
+      );
     }
 
     if (results) {
       return (
-        <div className="ui container">
+        <div className="ui segment" style={{ height: "auto" }}>
           <SearchResults results={results} />
         </div>
       );
@@ -46,12 +52,15 @@ const HomeSearch = () => {
 
   return (
     <div className="ui container">
-      <form onSubmit={handleSubmit}>
-        <label>
-          Search:
-          <input type="text" onChange={(e) => setSearch(e.target.value)} />
-        </label>
+      <form className="ui form" onSubmit={handleSubmit}>
+        <div className="field">
+          <label>
+            Search:
+            <input type="text" onChange={(e) => setSearch(e.target.value)} />
+          </label>
+        </div>
       </form>
+
       {renderResults()}
     </div>
   );
