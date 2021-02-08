@@ -22,6 +22,13 @@ const HomeSearch = () => {
     });
   }
 
+  function handleChange(e) {
+    setSearch(e.target.value);
+    if (search === "") {
+      setResults(null);
+    }
+  }
+
   function renderResults() {
     if (!loading && !results) {
       return (
@@ -56,7 +63,7 @@ const HomeSearch = () => {
         <div className="field">
           <label>
             Search:
-            <input type="text" onChange={(e) => setSearch(e.target.value)} />
+            <input type="text" onChange={(e) => handleChange(e)} />
           </label>
         </div>
       </form>
