@@ -7,6 +7,8 @@ const HomeSearch = () => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
 
+  const REQUEST_URL = process.env.REACT_APP_REQUEST_URL;
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -14,29 +16,25 @@ const HomeSearch = () => {
 
     await axios({
       method: "get",
-      url: `https://jsonplaceholder.typicode.com/users?id=${search}`,
+      url: `${REQUEST_URL}${search}`,
     }).then((res) => {
       setResults(res.data);
       setLoading(false);
-      setSearch("");
     });
   }
 
-  function handleChange(e) {
-    setSearch(e.target.value);
-    if (search === "") {
-      setResults(null);
-    }
-  }
-
   function renderResults() {
+    // if there are no results, and the axios request is not loading a response, show default prompt text.
     if (!loading && !results) {
       return (
         <div className="ui container">
-          Type in something and hit enter to search!
+          <div className="ui segment" style={{ height: "auto" }}>
+            Type in something and hit enter to search!
+          </div>
         </div>
       );
     }
+    //if loading, show loading spinner.
 
     if (loading) {
       return (
@@ -47,6 +45,7 @@ const HomeSearch = () => {
         </div>
       );
     }
+    // render results via SearchResults.jsx if available
 
     if (results) {
       return (
@@ -63,11 +62,14 @@ const HomeSearch = () => {
         <div className="field">
           <label>
             Search:
-            <input type="text" onChange={(e) => handleChange(e)} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </label>
         </div>
       </form>
-
       {renderResults()}
     </div>
   );
